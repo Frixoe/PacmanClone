@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../../Engine/StateManager/StateManager.h"
-#include "../../Headers/AnimatedSprite/AnimatedSprite.h"
 
 namespace ss
 {
@@ -16,8 +15,6 @@ namespace ss
 		virtual void updateContent(float dt) override;
 		virtual void draw() override;
 	private:
-		sf::RectangleShape rect;
-		//AnimatedSprite pacman;
 	};
 }
 
