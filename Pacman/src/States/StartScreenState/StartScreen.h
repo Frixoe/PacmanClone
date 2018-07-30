@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Engine/StateManager/StateManager.h"
+#include "../../Headers/CustomButton/CustomButton.h"
 
 namespace ss
 {
@@ -15,6 +16,7 @@ namespace ss
 		virtual void updateContent(float dt) override;
 		virtual void draw() override;
 	private:
+		CustomButton btn;
 	};
 }
 

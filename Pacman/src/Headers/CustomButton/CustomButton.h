@@ -20,6 +20,7 @@ namespace ss
 			sf::Font* font,
 			const int textSize,
 			InteractionManager* im,
+			bool onlyText,
 			const sf::Color& sColor = sf::Color::White,
 			const sf::Color& cColor = sf::Color::Cyan
 		);
@@ -40,6 +41,8 @@ namespace ss
 		void setTextures(sf::Texture* sTex, sf::Texture* cTex);
 		void setStyle(const sf::Text::Style& style);
 		void setColors(const sf::Color& sColor, const sf::Color& cColor);
+		void setTextColors(const sf::Color& sColor, const sf::Color& cColor);
+		void setPosition(const sf::Vector2f& pos);
 
 		void update(sf::RenderWindow& win);
 		void draw(sf::RenderWindow& win);
@@ -56,12 +59,20 @@ namespace ss
 		
 		InteractionManager* iMan;
 
-		sf::Texture* sTex; // Starting texture.
-		sf::Texture* cTex; // Texture change after mouse over it.
-		sf::Color sCol; // Starting color
-		sf::Color cCol; // Changed color
+		sf::Texture* sTex; // Starting texture of the rect.
+		sf::Texture* cTex; // Texture change after mouse over it(RECT).
 
-		bool _hasColor;
+		sf::Color sCol; // Starting color of the rect.
+		sf::Color cCol; // Changed color of the rect.
+
+		sf::Color sTCol; // Starting text color.
+		sf::Color cTCol; // Changed text color.
+
+		int textSize;
+
+		bool _hasRectColor;
+		bool _changesTextColor;
+		bool _onlyText;
 	};
 }
 

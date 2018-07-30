@@ -9,19 +9,34 @@ namespace ss
 		sf::Font* font,
 		const int textSize,
 		InteractionManager * im,
+		bool onlyText,
 		const sf::Color & sColor,
 		const sf::Color & cColor
-	) : 
+	) :
 		iMan(im),
 		rect(rectSize),
-		sCol(sColor),
-		cCol(cColor),
 		text(text, *font, textSize),
-		_hasColor(true)
+		textSize(textSize),
+		_hasRectColor(true),
+		_changesTextColor(false),
+		_onlyText(onlyText)
 	{
 		this->rect.setPosition(rectPos);
 
-		// Figure out the text position.
+		if (this->_onlyText)
+		{
+			this->sTCol = sColor;
+			this->cTCol = cColor;
+			this->_changesTextColor = true;
+
+			this->rect.setSize({ this->text.getGlobalBounds().width, this->text.getGlobalBounds().height });
+		}
+		else
+		{
+			this->sCol = sColor;
+			this->cCol = cColor;
+		}
+
 		this->setTextPosition();
 	}
 
@@ -40,7 +55,10 @@ namespace ss
 		sTex(sTexture),
 		cTex(cTexture),
 		text(text, *font, textSize),
-		_hasColor(false)
+		textSize(textSize),
+		_hasRectColor(false),
+		_changesTextColor(false),
+		_onlyText(false)
 	{
 		this->rect.setPosition(rectPos);
 
@@ -49,9 +67,16 @@ namespace ss
 	}
 
 	CustomButton::CustomButton(const CustomButton & b)
-		: iMan(b.iMan), rect(b.rect), text(b.text), _hasColor(b._hasColor)
+		: 
+		iMan(b.iMan),
+		rect(b.rect),
+		text(b.text),
+		textSize(b.textSize),
+		_hasRectColor(b._hasRectColor),
+		_changesTextColor(b._changesTextColor),
+		_onlyText(b._onlyText)
 	{
-		if (b._hasColor)
+		if (b._hasRectColor)
 		{
 			this->sCol = b.sCol;
 			this->cCol = b.cCol;
@@ -60,6 +85,12 @@ namespace ss
 		{
 			this->sTex = b.sTex;
 			this->cTex = b.cTex;
+		}
+
+		if (b._changesTextColor)
+		{
+			this->sTCol = b.sTCol;
+			this->cTCol = b.cTCol;
 		}
 	}
 
@@ -77,7 +108,7 @@ namespace ss
 		this->sTex = sTex;
 		this->cTex = cTex;
 
-		if (this->_hasColor) this->_hasColor = false;
+		if (this->_hasRectColor) this->_hasRectColor = false;
 	}
 
 	void CustomButton::setStyle(const sf::Text::Style & style)
@@ -90,12 +121,26 @@ namespace ss
 		this->sCol = sColor;
 		this->cCol = cColor;
 
-		if (!this->_hasColor) this->_hasColor = true;
+		if (!this->_hasRectColor) this->_hasRectColor = true;
+	}
+
+	void CustomButton::setTextColors(const sf::Color & sColor, const sf::Color & cColor)
+	{
+		this->_changesTextColor = true;
+
+		this->sTCol = sColor;
+		this->cTCol = cColor;
+	}
+
+	void CustomButton::setPosition(const sf::Vector2f & pos)
+	{
+		this->rect.setPosition(pos);
+		this->setTextPosition();
 	}
 
 	void CustomButton::update(sf::RenderWindow & win)
 	{
-		if (this->_hasColor)
+		if (this->_hasRectColor)
 		{
 			if (this->iMan->mouseOverShape(this->rect, win)) this->rect.setFillColor(this->cCol);
 			else this->rect.setFillColor(this->sCol);
@@ -105,6 +150,14 @@ namespace ss
 			if (this->iMan->mouseOverShape(this->rect, win)) this->rect.setTexture(this->cTex);
 			else this->rect.setTexture(this->sTex);
 		}
+
+		if (this->_onlyText) this->rect.setFillColor(sf::Color(0, 0, 0, 0));
+
+		if (
+			this->_changesTextColor &&
+			(this->iMan->mouseOverBounds(this->text.getGlobalBounds(), win) || 
+			this->iMan->mouseOverShape(this->rect, win)) this->text.setFillColor(this->cTCol);
+		else this->text.setFillColor(this->sTCol);
 	}
 
 	void CustomButton::draw(sf::RenderWindow & win)
