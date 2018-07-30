@@ -1,5 +1,5 @@
 # PacmanClone
-An imperfect clone of the infamous game Pacman.
+An imperfect clone of the famous game Pacman.
 
 ## Dependency
 This game is being made using the [SFML](https://github.com/SFML/SFML) library.
