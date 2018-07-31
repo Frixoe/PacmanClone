@@ -1,7 +1,12 @@
 #pragma once
 
-#include "../../Engine/StateManager/StateManager.h"
 #include "../../Headers/CustomButton/CustomButton.h"
+
+#include "../GameScreenState/GameScreen.h"
+#include "../ScoresScreenState/ScoresScreen.h"
+#include "../HelpScreenState/HelpScreen.h"
+
+#include <vector>
 
 namespace ss
 {
@@ -15,8 +20,24 @@ namespace ss
 		virtual void handleEventsContent(sf::Event &) override;
 		virtual void updateContent(float dt) override;
 		virtual void draw() override;
+
+		void playBtnPressed();
+		void scoresBtnPressed();
+		void helpBtnPressed();
 	private:
-		CustomButton btn;
+		sf::Sprite title;
+		sf::Sprite background;
+
+		std::vector<CustomButton> btns;
+
+		CustomButton playBtn;
+		CustomButton scoresBtn;
+		CustomButton helpBtn;
+		CustomButton quitBtn;
+
+		sf::Text pacmanEatingGhost;
+
+		int cBtnId;
 	};
 }
 

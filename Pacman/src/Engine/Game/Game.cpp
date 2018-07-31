@@ -17,6 +17,8 @@ namespace ss
 
 	void Game::run()
 	{
+		this->win.setFramerateLimit(60);
+
 		float dt;
 		sf::Clock clock;
 

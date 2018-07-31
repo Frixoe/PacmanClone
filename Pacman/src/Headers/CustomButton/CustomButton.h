@@ -5,7 +5,6 @@
 #include "../../Engine/InteractionManager/InteractionManager.h"
 
 #include <string>
-#include <functional>
 
 namespace ss
 {
@@ -21,6 +20,7 @@ namespace ss
 			const int textSize,
 			InteractionManager* im,
 			bool onlyText,
+			const int id,
 			const sf::Color& sColor = sf::Color::White,
 			const sf::Color& cColor = sf::Color::Cyan
 		);
@@ -31,6 +31,7 @@ namespace ss
 			sf::Font* font,
 			const int textSize,
 			InteractionManager* im,
+			const int id,
 			sf::Texture* sTexture,
 			sf::Texture* cTexture
 		);
@@ -44,13 +45,16 @@ namespace ss
 		void setTextColors(const sf::Color& sColor, const sf::Color& cColor);
 		void setPosition(const sf::Vector2f& pos);
 
-		void update(sf::RenderWindow& win);
+		void update(sf::RenderWindow& win, const int id);
 		void draw(sf::RenderWindow& win);
 
 		sf::RectangleShape& getRect();
 		sf::Text& getText();
 
 		bool wasClicked(const sf::Mouse::Button& btn, sf::RenderWindow& win);
+		bool idMatch(const int id);
+
+		bool wasClickedOrPressed(const sf::Mouse::Button& btn, sf::RenderWindow& win, const int id);
 	private:
 		void setTextPosition();
 
@@ -67,6 +71,8 @@ namespace ss
 
 		sf::Color sTCol; // Starting text color.
 		sf::Color cTCol; // Changed text color.
+
+		int id;
 
 		int textSize;
 

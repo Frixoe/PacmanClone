@@ -17,7 +17,7 @@ namespace ss
 		sf::Font* getFont(const std::string& name, const std::string& fileName);
 
 		sf::Texture* getTexture(const std::string& name);
-		sf::Texture* getTexture(const std::string& name, std::string& fileName);
+		sf::Texture* getTexture(const std::string& name, const std::string& fileName);
 	private:
 		template<class T> inline bool hasElement(const std::string& name, const std::map<std::string, T>& map);
 

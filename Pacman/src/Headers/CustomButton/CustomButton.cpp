@@ -10,6 +10,7 @@ namespace ss
 		const int textSize,
 		InteractionManager * im,
 		bool onlyText,
+		const int id,
 		const sf::Color & sColor,
 		const sf::Color & cColor
 	) :
@@ -17,6 +18,7 @@ namespace ss
 		rect(rectSize),
 		text(text, *font, textSize),
 		textSize(textSize),
+		id(id),
 		_hasRectColor(true),
 		_changesTextColor(false),
 		_onlyText(onlyText)
@@ -29,7 +31,7 @@ namespace ss
 			this->cTCol = cColor;
 			this->_changesTextColor = true;
 
-			this->rect.setSize({ this->text.getGlobalBounds().width, this->text.getGlobalBounds().height });
+			this->rect.setSize({ 0.0f, 0.0f });
 		}
 		else
 		{
@@ -47,6 +49,7 @@ namespace ss
 		sf::Font * font,
 		const int textSize,
 		InteractionManager * im,
+		const int id,
 		sf::Texture * sTexture,
 		sf::Texture * cTexture
 	) :
@@ -56,6 +59,7 @@ namespace ss
 		cTex(cTexture),
 		text(text, *font, textSize),
 		textSize(textSize),
+		id(id),
 		_hasRectColor(false),
 		_changesTextColor(false),
 		_onlyText(false)
@@ -72,6 +76,7 @@ namespace ss
 		rect(b.rect),
 		text(b.text),
 		textSize(b.textSize),
+		id(b.id),
 		_hasRectColor(b._hasRectColor),
 		_changesTextColor(b._changesTextColor),
 		_onlyText(b._onlyText)
@@ -138,25 +143,25 @@ namespace ss
 		this->setTextPosition();
 	}
 
-	void CustomButton::update(sf::RenderWindow & win)
+	void CustomButton::update(sf::RenderWindow & win, const int id)
 	{
 		if (this->_hasRectColor)
 		{
-			if (this->iMan->mouseOverShape(this->rect, win)) this->rect.setFillColor(this->cCol);
+			if (this->iMan->mouseOverShape(this->rect, win) || this->id == id) this->rect.setFillColor(this->cCol);
 			else this->rect.setFillColor(this->sCol);
 		}
 		else
 		{
-			if (this->iMan->mouseOverShape(this->rect, win)) this->rect.setTexture(this->cTex);
+			if (this->iMan->mouseOverShape(this->rect, win) || this->id == id) this->rect.setTexture(this->cTex);
 			else this->rect.setTexture(this->sTex);
 		}
 
 		if (this->_onlyText) this->rect.setFillColor(sf::Color(0, 0, 0, 0));
 
-		if (
-			this->_changesTextColor &&
+		if (this->_changesTextColor && 
 			(this->iMan->mouseOverBounds(this->text.getGlobalBounds(), win) || 
-			this->iMan->mouseOverShape(this->rect, win)) this->text.setFillColor(this->cTCol);
+				this->iMan->mouseOverShape(this->rect, win) || this->id == id)
+		) this->text.setFillColor(this->cTCol);
 		else this->text.setFillColor(this->sTCol);
 	}
 
@@ -178,7 +183,20 @@ namespace ss
 
 	bool CustomButton::wasClicked(const sf::Mouse::Button& btn, sf::RenderWindow & win)
 	{
-		return sf::Mouse::isButtonPressed(btn) && this->iMan->mouseOverShape(this->rect, win);
+		return sf::Mouse::isButtonPressed(btn) && (
+				this->iMan->mouseOverShape(this->rect, win) ||
+				this->iMan->mouseOverBounds(this->text.getGlobalBounds(), win)
+			);
+	}
+
+	bool CustomButton::idMatch(const int id)
+	{
+		return sf::Keyboard::isKeyPressed(sf::Keyboard::Enter) && this->id == id;
+	}
+
+	bool CustomButton::wasClickedOrPressed(const sf::Mouse::Button & btn, sf::RenderWindow & win, const int id)
+	{
+		return this->idMatch(id) || this->wasClicked(btn, win);
 	}
 
 	void CustomButton::setTextPosition()

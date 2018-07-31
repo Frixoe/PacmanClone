@@ -32,7 +32,7 @@ namespace ss
 		return this->hasElement(name, this->_textures) ? this->_textures.at(name) : nullptr;
 	}
 
-	sf::Texture * AssetManager::getTexture(const std::string & name, std::string & fileName)
+	sf::Texture * AssetManager::getTexture(const std::string & name, const std::string & fileName)
 	{
 		this->loadTexture(name, fileName);
 		return this->getTexture(name);

@@ -16,7 +16,7 @@ namespace ss
 		StateManager();
 		~StateManager();
 
-		void addState(StatePtr state, bool replace = true);
+		void addState(StatePtr state, bool replace = true, bool keepPrevStateRunning = false, bool pausePrevState = false);
 		void removeState(StatePtr state);
 		void removeState();
 		void updateStates(float dt);
@@ -24,6 +24,9 @@ namespace ss
 		void handleEvents(sf::RenderWindow&);
 
 		StatePtr getActiveState();
+		StatePtr getStateAt(const size_t idx);
+
+		void resumePrevState();
 
 	private:
 		std::deque<StatePtr> _states;

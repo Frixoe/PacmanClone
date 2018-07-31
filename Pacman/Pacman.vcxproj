@@ -123,6 +123,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\States\HelpScreenState\HelpScreen.cpp" />
+    <ClCompile Include="src\States\ScoresScreenState\ScoresScreen.cpp" />
+    <ClCompile Include="src\States\GameScreenState\GameScreen.cpp" />
     <ClCompile Include="src\Headers\CustomButton\CustomButton.cpp" />
     <ClCompile Include="src\Engine\InteractionManager\InteractionManager.cpp" />
     <ClCompile Include="src\States\StartScreenState\StartScreen.cpp" />
@@ -135,6 +138,9 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\States\HelpScreenState\HelpScreen.h" />
+    <ClInclude Include="src\States\ScoresScreenState\ScoresScreen.h" />
+    <ClInclude Include="src\States\GameScreenState\GameScreen.h" />
     <ClInclude Include="src\Headers\CustomButton\CustomButton.h" />
     <ClInclude Include="src\Engine\InteractionManager\InteractionManager.h" />
     <ClInclude Include="src\States\StartScreenState\StartScreen.h" />
