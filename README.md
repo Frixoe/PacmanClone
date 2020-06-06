@@ -2,7 +2,7 @@
 An imperfect clone of the famous game Pacman.
 
 ## Dependency
-This game is being made using the [SFML](https://github.com/SFML/SFML) library.
+This game was made using the [SFML](https://github.com/SFML/SFML) library.
 
 ### Current State
 This repository is no longer being maintained as I have no interest in Game Development.
